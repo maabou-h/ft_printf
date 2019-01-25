@@ -6,7 +6,7 @@
 /*   By: maabou-h <maabou-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/02 19:16:50 by maabou-h          #+#    #+#             */
-/*   Updated: 2019/01/20 16:02:07 by maabou-h         ###   ########.fr       */
+/*   Updated: 2019/01/25 11:27:49 by maabou-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,60 +17,82 @@ size_t	ft_strlen(const char *s)
 	size_t	i;
 
 	i = 0;
-	while (*s++)
-		i++;
+	if (s)
+	{
+		while (s[i])
+			i++;
+	}
 	return (i);
 }
 
-int	ft_putchar(unsigned char c, t_pf raw)
+int		ft_putchar(unsigned char c, t_pf *raw)
 {
-	if (raw.flag & FLAG_MIN)
+	int		i;
+
+	i = raw->fi;
+	i = (i <= 0) ? 1 : i;
+	if (raw->fl & F_M)
 		write(1, &c, sizeof(c));
-	while (raw.field-- > 1)
-		write(1, " ", 1);
-	if (!(raw.flag & FLAG_MIN))
+	if (raw->fl & F_Z)
+	{
+		while (raw->fi-- > 1)
+			write(1, "0", 1);
+	}
+	else
+	{
+		while (raw->fi-- > 1)
+			write(1, " ", 1);
+	}
+	if (!(raw->fl & F_M))
 		write(1, &c, sizeof(c));
-	return (1);
+	return (i);
 }
 
-int	ft_putstr(char const *s, t_pf raw)
+int		ft_putstr(char const *s, t_pf *raw)
 {
-	int i;
-	int j;
-	int k;
+	int		i;
+	int		j;
+	int		k;
+	int		len;
+	char	*x;
 
-	if (!s)
-	{
-		write(1, "(null)", 6);
-		return (6);
-	}
+	x = (!s) ? "(null)" : NULL;
+	len = (!s) ? 6 : (int)ft_strlen(s);
 	j = 0;
-	k = (raw.precision) ? raw.precision : ft_strlen(s);
-	i = raw.field - k;
-	if (raw.flag & FLAG_MIN)
-		write(1, s, k);
-	while (i-- > 0)
+	(!(raw->fl & P_A)) ? raw->pr = len : 0;
+	(raw->pr > len) ? raw->pr = len : 0;
+	i = ((raw->fl & P_A) && raw->pr > len) ? 0 : raw->fi - raw->pr;
+	k = (raw->pr < len && (raw->fl & P_A)) ?
+		raw->pr : len;
+	if (raw->fl & F_M)
+			(!s) ? write(1, x, k) : write(1, s, k);
+if (!(raw->fl & F_Z))
 	{
-		write(1, " ", 1);
-		j++;
+		while (i-- > 0)
+			j += ft_parser(' ');
+		}
+else
+{
+	while (i-- > 0)
+		j += ft_parser('0');
 	}
-	if (!(raw.flag & FLAG_MIN))
-		write(1, s, k);
+	if (!(raw->fl & F_M))
+		(!s) ? write(1, x, k) : write(1, s, k);
 	return (k + j);
 }
 
-int		ft_csp_case(t_pf raw, va_list ap)
+int		ft_csp_case(t_pf *raw, va_list ap)
 {
-	if (raw.spec == 'c' && !raw.precision && !raw.flag)
+	int		i;
+
+	i = 0;
+	if (raw->id == 'c')
 		return (ft_putchar((unsigned char)va_arg(ap, int), raw));
-	else if (raw.spec == 's')
+	else if (raw->id == '%')
+		return (ft_putchar('%', raw));
+	else if (raw->id == 's')
 		return (ft_putstr(va_arg(ap, char*), raw));
-	else if (raw.spec == 'p')
-	{
-		write(1, "0x", 2);
-		return (ft_nbr_upp((long long)va_arg(ap, void*), 16, raw) + 2);
-	}
-	else
-		exit(0);
-	return (0);
+	else if (raw->id == 'p')
+		return (ft_append_p((uintmax_t)va_arg(ap, void*), 16, raw));
+	return (-1);
 }
