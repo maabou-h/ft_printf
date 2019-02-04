@@ -6,7 +6,7 @@
 /*   By: maabou-h <maabou-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/02 19:16:50 by maabou-h          #+#    #+#             */
-/*   Updated: 2019/01/25 11:27:49 by maabou-h         ###   ########.fr       */
+/*   Updated: 2019/01/27 00:25:29 by maabou-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,17 +65,13 @@ int		ft_putstr(char const *s, t_pf *raw)
 	k = (raw->pr < len && (raw->fl & P_A)) ?
 		raw->pr : len;
 	if (raw->fl & F_M)
-			(!s) ? write(1, x, k) : write(1, s, k);
-if (!(raw->fl & F_Z))
-	{
+		(!s) ? write(1, x, k) : write(1, s, k);
+	if (!(raw->fl & F_Z))
 		while (i-- > 0)
 			j += ft_parser(' ');
-		}
-else
-{
-	while (i-- > 0)
-		j += ft_parser('0');
-	}
+	else
+		while (i-- > 0)
+			j += ft_parser('0');
 	if (!(raw->fl & F_M))
 		(!s) ? write(1, x, k) : write(1, s, k);
 	return (k + j);

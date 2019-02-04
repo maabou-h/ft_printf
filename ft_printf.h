@@ -6,7 +6,7 @@
 /*   By: maabou-h <maabou-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/20 14:53:43 by maabou-h          #+#    #+#             */
-/*   Updated: 2019/01/25 21:39:14 by maabou-h         ###   ########.fr       */
+/*   Updated: 2019/01/27 00:36:59 by maabou-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ typedef struct	s_pf
 	char		id;
 }				t_pf;
 
-int		ft_rawlenm(intmax_t nbr, int base);
+int				ft_rawlenm(intmax_t nbr, int base);
 size_t			ft_strlen(const char *s);
 int				ft_putchar(unsigned char c, t_pf *raw);
 int				ft_putstr(char const *s, t_pf *raw);

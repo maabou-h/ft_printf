@@ -6,7 +6,7 @@
 /*   By: maabou-h <maabou-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/17 18:32:33 by maabou-h          #+#    #+#             */
-/*   Updated: 2019/01/24 19:09:06 by maabou-h         ###   ########.fr       */
+/*   Updated: 2019/01/26 21:53:41 by maabou-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,12 @@ int	ft_parse_before_xu(t_pf *raw, uintmax_t n, int base)
 	{
 		(raw->fl & F_H && n > 0) ? j += ft_parser('0') : 0;
 		(raw->fl & F_H && n > 0) ? j += ft_parser('X') : 0;
-		while (raw->fi-- > ft_rawlen(n, base) + j)
+		while (raw->fi-- > ft_pflen(n, base) + j)
 			i += ft_parser('0');
 	}
 	else
 	{
-		while (raw->fi-- > ft_rawlen(n, base) + k)
+		while (raw->fi-- > ft_pflen(n, base) + k)
 			i += ft_parser(' ');
 		(raw->fl & F_H && n > 0) ? j += ft_parser('0') : 0;
 		(raw->fl & F_H && n > 0) ? j += ft_parser('X') : 0;
@@ -44,22 +44,23 @@ int	ft_parse_between_xu(t_pf *raw, uintmax_t n, int base)
 	int i;
 	int j;
 	int k;
+	int fl;
 
 	i = 0;
 	j = 0;
-	k = (raw->pr > ft_intlen(n, base)) ? raw->fi - raw->pr : raw->fi -
-		ft_intlen(n, base);
+	fl = (raw->fl & F_H && n > 0) ? 2 : 0;
+	k = (raw->pr > ft_pflen(n, base)) ? raw->fi - raw->pr : raw->fi -
+		ft_pflen(n, base);
 	if (k < 0)
 		k = 0;
-	k = (raw->fl & F_H && n > 0) ? k + 2 : k;
-	while (k--)
+	while (k-- > fl)
 		j += ft_parser(' ');
 	if (raw->fl & F_H && n > 0)
 	{
 		j += ft_parser('0');
 		j += ft_parser('X');
 	}
-	while (raw->pr-- > ft_rawlen(n, base))
+	while (raw->pr-- > ft_pflen(n, base))
 		i += ft_parser('0');
 	if (n == 0 && raw->pr == -1 && (raw->fl & P_A))
 		return (j + i);
@@ -81,7 +82,7 @@ int	ft_parse_after_xu(t_pf *raw, uintmax_t n, int base)
 	}
 	if (raw->fl & P_A)
 	{
-		while (raw->pr-- > ft_rawlen(n, base))
+		while (raw->pr-- > ft_pflen(n, base))
 			j += ft_parser('0');
 	}
 	j += ft_nbr_uns(n, base, raw, "0123456789ABCDEF");

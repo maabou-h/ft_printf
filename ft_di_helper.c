@@ -6,7 +6,7 @@
 /*   By: maabou-h <maabou-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/17 18:32:33 by maabou-h          #+#    #+#             */
-/*   Updated: 2019/01/25 21:47:15 by maabou-h         ###   ########.fr       */
+/*   Updated: 2019/01/27 00:25:48 by maabou-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,8 @@ int	ft_parse_between(t_pf *raw, long long n, int base)
 
 	i = 0;
 	j = 0;
-	k = (((raw->fl & F_P) && n >= 0) || ((raw->fl & F_S) && n >= 0) || (n < 0)) ? 1 : 0;
+	k = (((raw->fl & F_P) && n >= 0) ||
+			((raw->fl & F_S) && n >= 0) || (n < 0)) ? 1 : 0;
 	len = ft_rawlenm(n, base) - (n == 0 && (raw->fl & P_A) && raw->pr == 0);
 	z = (raw->pr > len) ? raw->pr : len;
 	while (z++ < raw->fi - k)

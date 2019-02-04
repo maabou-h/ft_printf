@@ -6,7 +6,7 @@
 #    By: maabou-h <maabou-h@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/22 20:41:23 by maabou-h          #+#    #+#              #
-#    Updated: 2019/01/24 13:34:35 by maabou-h         ###   ########.fr        #
+#    Updated: 2019/01/27 00:48:07 by maabou-h         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,11 +28,11 @@ OBJ = $(SRC:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	ar rc $@ $^
-	ranlib $(NAME)
+	@ar rc $@ $^
+	@ranlib $(NAME)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -o $@ -c $^
+	$(CC) $(CFLAGS) -o $@ -c $<
 
 clean:
 	rm -rf $(OBJ)
